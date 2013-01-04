@@ -1,7 +1,9 @@
 package com.harigames.rain;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -9,6 +11,7 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import com.harigames.rain.entity.mob.Player;
 import com.harigames.rain.graphics.Screen;
 import com.harigames.rain.input.Keyboard;
 import com.harigames.rain.level.Level;
@@ -29,9 +32,9 @@ public class Game extends Canvas implements Runnable {
 	private JFrame frame;
 	private Keyboard key;
 	private Level level;
+	private Player player;
 	private boolean running = false;
-	private int x = 0, y = 0;
-	
+
 	private Screen screen;
 	
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -45,6 +48,7 @@ public class Game extends Canvas implements Runnable {
 		frame = new JFrame();
 		key = new Keyboard();
 		level = new RandomLevel(64, 64);
+		player = new Player(key);
 		
 		addKeyListener(key);
 	}
@@ -88,8 +92,7 @@ public class Game extends Canvas implements Runnable {
 				timer += 1000;
 				frame.setTitle(Game.title + "  |  " + 
 								updates + " ups, " + 
-								frames + " fps " +
-								" x:" + x + " y:" + y);
+								frames + " fps " );
 				updates = 0;
 				frames = 0;
 			}
@@ -98,11 +101,7 @@ public class Game extends Canvas implements Runnable {
 	
 	public void update() {
 		key.update();
-		
-		if (key.up) y--;
-		if (key.down) y++;
-		if (key.left) x--;
-		if (key.right) x++;
+		player.update();
 	}
 	
 	// Buffer strategy
@@ -114,12 +113,16 @@ public class Game extends Canvas implements Runnable {
 		}
 		
 		screen.clear();
-		level.render(x, y, screen);
+		level.render(player.x, player.y, screen);
 		
 		System.arraycopy(screen.pixels, 0, pixels, 0, screen.pixels.length);
 		
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Verdana", 0, 50));
+		//String msg = "X: " + x + ", Y: " + y;
+		//g.drawString(msg, width * scale / 2 - msg.length()*30/2, height*scale/2);
 		g.dispose();
 		bs.show();
 	}
