@@ -8,6 +8,8 @@ public class Player extends Mob {
 
 	private Keyboard input;
 	private Sprite sprite;
+	private int animation = 0;
+	private boolean walking = false;
 
 	public Player(Keyboard input) {
 		this.input = input;
@@ -23,6 +25,7 @@ public class Player extends Mob {
 
 	public void update() {
 		int xa = 0, ya = 0;
+		animation += 1 % 30;
 		if (input.up)
 			ya--;
 		if (input.down)
@@ -32,15 +35,61 @@ public class Player extends Mob {
 		if (input.right)
 			xa++;
 
-		if (xa != 0 || ya != 0)
+		if (xa != 0 || ya != 0) {
 			move(xa, ya);
+			walking = true;
+		} else {
+			walking = false;
+		}
 	}
 
 	public void render(Screen screen) {
-		if (dir == 0) sprite = Sprite.player_up;
-		if (dir == 2) sprite = Sprite.player_down;
-		if (dir == 1) sprite = Sprite.player_right;
-		if (dir == 3) sprite = Sprite.player_left;
-		screen.renderPlayer(x - 16, y - 16, sprite);
+		int flip = 0;
+		if (dir == 0) {
+			if (walking) {
+				if (animation % 30 < 10) {
+					sprite = Sprite.player_up;
+				} else if (animation % 30 < 20) {
+					sprite = Sprite.player_up_1;
+				} else {
+					sprite = Sprite.player_up_2;
+				}
+			}
+		}
+		if (dir == 2) {
+			if (walking) {
+				if (animation % 30 < 10) {
+					sprite = Sprite.player_down;
+				} else if (animation % 30 < 20) {
+					sprite = Sprite.player_down_1;
+				} else {
+					sprite = Sprite.player_down_2;
+				}
+			}
+		}
+		if (dir == 1) {
+			if (walking) {
+				if (animation % 30 < 10) {
+					sprite = Sprite.player_side;
+				} else if (animation % 30 < 20) {
+					sprite = Sprite.player_side_1;
+				} else {
+					sprite = Sprite.player_side_2;
+				}
+			}
+		}
+		if (dir == 3) {
+			flip = 1;
+			if (walking) {
+				if (animation % 30 < 10) {
+					sprite = Sprite.player_side;
+				} else if (animation % 30 < 20) {
+					sprite = Sprite.player_side_1;
+				} else {
+					sprite = Sprite.player_side_2;
+				}
+			}
+		}
+		screen.renderPlayer(x - 16, y - 16, sprite, flip);
 	}
 }
