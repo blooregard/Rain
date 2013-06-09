@@ -15,7 +15,7 @@ import com.harigames.rain.entity.mob.Player;
 import com.harigames.rain.graphics.Screen;
 import com.harigames.rain.input.Keyboard;
 import com.harigames.rain.level.Level;
-import com.harigames.rain.level.RandomLevel;
+import com.harigames.rain.level.TileCoordinate;
 
 public class Game extends Canvas implements Runnable {
 
@@ -49,8 +49,9 @@ public class Game extends Canvas implements Runnable {
 		screen = new Screen(width, height);
 		frame = new JFrame();
 		key = new Keyboard();
-		level = new RandomLevel(64, 64);
-		player = new Player(key);
+		level = Level.spawn;
+		TileCoordinate playerSpawn = new TileCoordinate(20,62);
+		player = new Player(playerSpawn.getX(), playerSpawn.getY(), key);
 
 		addKeyListener(key);
 	}

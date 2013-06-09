@@ -2,10 +2,10 @@ package com.harigames.rain.level.tile;
 
 import com.harigames.rain.graphics.Sprite;
 
-public class GrassTile extends Tile {
+public class FlowerTile extends Tile {
 
-	public GrassTile(Sprite sprite) {
+	public FlowerTile(Sprite sprite) {
 		super(sprite);
 	}
-	
+
 }

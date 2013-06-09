@@ -8,8 +8,20 @@ public class Sprite {
 	private SpriteSheet sheet;
 	
 	public static Sprite grass = new Sprite(16, 1, 0, SpriteSheet.tiles);
+	public static Sprite flower = new Sprite(16, 2, 0, SpriteSheet.tiles);
+	public static Sprite rock = new Sprite(16, 3, 0, SpriteSheet.tiles);
 	public static Sprite voidSprite = new Sprite(16, 0x1B87E0);
 	
+	//Spawn Level Sprites here
+	public static Sprite spawn_grass = new Sprite(16, 0, 0, SpriteSheet.spawn_level);
+	public static Sprite spawn_hedge = new Sprite(16, 1, 0, SpriteSheet.spawn_level);
+	public static Sprite spawn_water = new Sprite(16, 2, 0, SpriteSheet.spawn_level);
+	public static Sprite spawn_wall1 = new Sprite(16, 0, 1, SpriteSheet.spawn_level);
+	public static Sprite spawn_wall2 = new Sprite(16, 0, 2, SpriteSheet.spawn_level);
+	public static Sprite spawn_floor = new Sprite(16, 1, 1, SpriteSheet.spawn_level);
+	public static Sprite spawn_sand = new Sprite(16, 1, 2, SpriteSheet.spawn_level);
+	
+	//Player Sprites here
 	public static Sprite player_up = new Sprite(32, 0, 5, SpriteSheet.tiles);
 	public static Sprite player_up_1 = new Sprite(32, 0, 6, SpriteSheet.tiles);
 	public static Sprite player_up_2 = new Sprite(32, 0, 7, SpriteSheet.tiles);
