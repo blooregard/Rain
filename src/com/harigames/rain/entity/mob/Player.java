@@ -1,8 +1,12 @@
 package com.harigames.rain.entity.mob;
 
+import com.harigames.rain.Game;
+import com.harigames.rain.entity.projectile.Projectile;
+import com.harigames.rain.entity.projectile.WizardProjectile;
 import com.harigames.rain.graphics.Screen;
 import com.harigames.rain.graphics.Sprite;
 import com.harigames.rain.input.Keyboard;
+import com.harigames.rain.input.Mouse;
 
 public class Player extends Mob {
 
@@ -10,10 +14,12 @@ public class Player extends Mob {
 	private Sprite sprite;
 	private int animation = 0;
 	private boolean walking = false;
+	private int fireRate;
 
 	public Player(Keyboard input) {
 		this.input = input;
 		sprite = Sprite.player_down;
+		fireRate = WizardProjectile.FIRE_RATE;
 	}
 
 	public Player(int x, int y, Keyboard input) {
@@ -24,6 +30,7 @@ public class Player extends Mob {
 	}
 
 	public void update() {
+		if (fireRate > 0) fireRate--;
 		int xa = 0, ya = 0;
 		animation += 1 % 30;
 		if (input.up)
@@ -41,6 +48,22 @@ public class Player extends Mob {
 		} else {
 			walking = false;
 		}
+		
+		clear();
+		updateShooting();
+	}
+
+	private void updateShooting() {
+		if (Mouse.getButton() == 1 && fireRate <= 0) {
+			double dx = Mouse.getX() - Game.getWindowWidth() / 2;
+			double dy = Mouse.getY() - Game.getWindowHeight() / 2;
+			double dir = Math.atan2(dy, dx);
+			
+			shoot(x, y, dir);
+			fireRate = WizardProjectile.FIRE_RATE;
+		}
+		
+		
 	}
 
 	public void render(Screen screen) {

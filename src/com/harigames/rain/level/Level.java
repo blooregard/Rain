@@ -1,5 +1,10 @@
 package com.harigames.rain.level;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.harigames.rain.entity.Entity;
+import com.harigames.rain.entity.projectile.Projectile;
 import com.harigames.rain.graphics.Screen;
 import com.harigames.rain.level.tile.Tile;
 
@@ -8,6 +13,10 @@ public class Level {
 	protected int width, height;
 	protected int[] tilesInt;
 	protected int[] tiles;
+	
+	private List<Entity> entities = new ArrayList<Entity>();
+	private List<Projectile> projectiles = new ArrayList<Projectile>();
+	
 	public static Level spawn = new SpawnLevel("/levels/spawn.png");
 
 	public Level(int width, int height) {
@@ -35,7 +44,13 @@ public class Level {
 	}
 
 	public void update() {
-
+		for (Entity e: entities) {
+			e.update();
+		}
+		
+		for (Projectile p: projectiles) {
+			p.update();
+		}
 	}
 
 	public void render(int xScroll, int yScroll, Screen screen) {
@@ -50,6 +65,26 @@ public class Level {
 				getTile(x, y).render(x, y, screen);
 			}
 		}
+		
+		for (Entity e: entities) {
+			e.render(screen);
+		}
+		
+		for (Projectile p: projectiles) {
+			p.render(screen);
+		}
+	}
+	
+	public void add(Entity e) {
+		entities.add(e);
+	}
+	
+	public void addProjectile(Projectile p) {
+		projectiles.add(p);
+	}
+	
+	public List<Projectile> getProjectiles() {
+		return this.projectiles;
 	}
 
 	// Grass = 0xFF00
