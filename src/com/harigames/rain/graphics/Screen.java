@@ -1,11 +1,14 @@
 package com.harigames.rain.graphics;
 
+import java.awt.Color;
 import java.util.Random;
 
 import com.harigames.rain.entity.projectile.Projectile;
 import com.harigames.rain.level.tile.Tile;
 
 public class Screen {
+
+	public static final int DARKNESS = 75;
 
 	public int width, height;
 	public int[] pixels;
@@ -44,8 +47,8 @@ public class Screen {
 					break;
 				if (xa < 0)
 					xa = 0;
-				pixels[xa + ya * width] = tile.sprite.pixels[x + y
-						* tile.sprite.SIZE];
+				pixels[xa + ya * width] = darken(tile.sprite.pixels[x + y
+						* tile.sprite.SIZE]);
 			}
 		}
 	}
@@ -57,13 +60,14 @@ public class Screen {
 			int ya = y + yp;
 			for (int x = 0; x < p.sprite.SIZE; x++) {
 				int xa = x + xp;
-				if (xa < -p.getSpriteSize() || xa >= width || ya < 0 || ya >= height)
+				if (xa < -p.getSpriteSize() || xa >= width || ya < 0
+						|| ya >= height)
 					break;
 				if (xa < 0)
 					xa = 0;
 				int col = p.getSprite().pixels[x + y * p.getSpriteSize()];
 				if (col != 0xffff00ff)
-					pixels[xa + ya * width] = col;
+					pixels[xa + ya * width] = darken(col);
 			}
 		}
 	}
@@ -90,7 +94,7 @@ public class Screen {
 					xa = 0;
 				int col = sprite.pixels[xs + ys * sprite.SIZE];
 				if (col != 0xffff00ff)
-					pixels[xa + ya * width] = col;
+					pixels[xa + ya * width] = darken(col);
 			}
 		}
 	}
@@ -98,6 +102,16 @@ public class Screen {
 	public void setOffset(int xOffset, int yOffset) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+	}
+
+	private int darken(int pixel) {
+		Color c = new Color(pixel);
+		int red = (c.getRed() - DARKNESS) <= 0 ? 0 : c.getRed() - DARKNESS;
+		int green = (c.getGreen() - DARKNESS) <= 0 ? 0 : c.getGreen()
+				- DARKNESS;
+		int blue = (c.getBlue() - DARKNESS) <= 0 ? 0 : c.getBlue() - DARKNESS;
+		c = new Color(red, green, blue);
+		return c.getRGB();
 	}
 
 }
